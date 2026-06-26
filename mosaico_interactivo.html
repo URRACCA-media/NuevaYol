@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URRACCA</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow: auto;
+            padding: 40px;
+        }
+
+        .canvas-wrapper {
+            width: 100%;
+            max-width: 4185px;
+            overflow: visible;
+        }
+
+        .canvas {
+            position: relative;
+            width: 4185px;
+            height: 3255px;
+            transform-origin: top left;
+        }
+
+        .canvas img {
+            transition: opacity 0.2s, transform 0.2s;
+            border-radius: 2px;
+        }
+
+        .canvas img:hover {
+            opacity: 0.85;
+            transform: scale(1.08);
+            z-index: 10;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 4rem;
+            cursor: pointer;
+            padding: 25px 20px;
+            z-index: 1001;
+            transition: background 0.2s;
+            border-radius: 6px;
+        }
+
+        .lightbox-nav:hover { background: rgba(255, 255, 255, 0.3); }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        .lightbox-close {
+            position: fixed;
+            top: 15px; right: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .lightbox-close:hover { background: rgba(255, 255, 255, 0.3); }
+
+        @media (max-width: 768px) {
+            .lightbox-nav {
+                font-size: 2.5rem;
+                padding: 15px 12px;
+            }
+            .lightbox-close {
+                font-size: 1.8rem;
+                padding: 6px 12px;
+            }
+            body {
+                padding: 20px 10px;
+            }
+            .frases {
+                padding: 0 15px 60px;
+            }
+        }
+
+        .frases {
+            margin-top: 80px;
+            max-width: 700px;
+            padding: 0 20px 80px;
+        }
+
+        .frases p {
+            color: rgba(255, 255, 255, 0.85);
+            font-family: 'Georgia', serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 0.6em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="canvas-wrapper" id="canvas-wrapper">
+<div class="canvas" id="canvas">
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/9841491.jpeg" alt="" data-index="0" style="position:absolute; left:0px; top:3069px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_06.jpeg" alt="" data-index="1" style="position:absolute; left:93px; top:3069px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_10.jpeg" alt="" data-index="2" style="position:absolute; left:0px; top:3162px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/5645645645.jpeg" alt="" data-index="3" style="position:absolute; left:93px; top:3162px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/656565.jpeg" alt="" data-index="4" style="position:absolute; left:465px; top:3162px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_05.jpeg" alt="" data-index="5" style="position:absolute; left:465px; top:3069px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/144.jpeg" alt="" data-index="6" style="position:absolute; left:558px; top:2976px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/454545.jpeg" alt="" data-index="7" style="position:absolute; left:558px; top:2883px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_36.jpeg" alt="" data-index="8" style="position:absolute; left:651px; top:2790px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/1222.jpeg" alt="" data-index="9" style="position:absolute; left:651px; top:2697px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_37.jpeg" alt="" data-index="10" style="position:absolute; left:744px; top:2604px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_35.jpeg" alt="" data-index="11" style="position:absolute; left:744px; top:2511px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/121212%20(2).jpeg" alt="" data-index="12" style="position:absolute; left:837px; top:2418px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/%2B9%2B%2B.jpeg" alt="" data-index="13" style="position:absolute; left:837px; top:2325px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_11.jpeg" alt="" data-index="14" style="position:absolute; left:930px; top:2232px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_0555.jpeg" alt="" data-index="15" style="position:absolute; left:930px; top:2139px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_04.jpeg" alt="" data-index="16" style="position:absolute; left:1023px; top:2046px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/789789789%20(3).jpeg" alt="" data-index="17" style="position:absolute; left:1023px; top:1953px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_28.jpeg" alt="" data-index="18" style="position:absolute; left:1116px; top:1860px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_14.jpeg" alt="" data-index="19" style="position:absolute; left:1116px; top:1767px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/789415616.jpeg" alt="" data-index="20" style="position:absolute; left:1209px; top:1674px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/789789789.jpeg" alt="" data-index="21" style="position:absolute; left:1209px; top:1581px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/1515151.jpeg" alt="" data-index="22" style="position:absolute; left:1302px; top:1488px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/18888.jpeg" alt="" data-index="23" style="position:absolute; left:1302px; top:1395px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/121212%20(3).jpeg" alt="" data-index="24" style="position:absolute; left:1395px; top:1302px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_32.jpeg" alt="" data-index="25" style="position:absolute; left:1395px; top:1209px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_19.jpeg" alt="" data-index="26" style="position:absolute; left:1488px; top:1116px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_12.jpeg" alt="" data-index="27" style="position:absolute; left:1488px; top:1023px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_34.jpeg" alt="" data-index="28" style="position:absolute; left:1581px; top:930px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_07.jpeg" alt="" data-index="29" style="position:absolute; left:1581px; top:837px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/15555.jpeg" alt="" data-index="30" style="position:absolute; left:1674px; top:744px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/789789798.jpeg" alt="" data-index="31" style="position:absolute; left:1674px; top:651px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/789789789%20(2).jpeg" alt="" data-index="32" style="position:absolute; left:1767px; top:558px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_15.jpeg" alt="" data-index="33" style="position:absolute; left:1767px; top:465px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_26.jpeg" alt="" data-index="34" style="position:absolute; left:1860px; top:372px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/456456456.jpeg" alt="" data-index="35" style="position:absolute; left:1860px; top:279px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/156156156.jpeg" alt="" data-index="36" style="position:absolute; left:1953px; top:186px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/78978979.jpeg" alt="" data-index="37" style="position:absolute; left:1953px; top:93px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_077.jpeg" alt="" data-index="38" style="position:absolute; left:2046px; top:0px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/4891465.jpeg" alt="" data-index="39" style="position:absolute; left:2139px; top:93px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/16666.jpeg" alt="" data-index="40" style="position:absolute; left:2232px; top:186px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/3232323.jpeg" alt="" data-index="41" style="position:absolute; left:2232px; top:279px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_23.jpeg" alt="" data-index="42" style="position:absolute; left:2325px; top:372px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/789789789g_33.jpeg" alt="" data-index="43" style="position:absolute; left:2325px; top:465px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/45645645.jpeg" alt="" data-index="44" style="position:absolute; left:2418px; top:558px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_31.jpeg" alt="" data-index="45" style="position:absolute; left:2418px; top:651px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/91519591.jpeg" alt="" data-index="46" style="position:absolute; left:2511px; top:744px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/12121212.jpeg" alt="" data-index="47" style="position:absolute; left:2511px; top:837px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/12121212%20(2).jpeg" alt="" data-index="48" style="position:absolute; left:2604px; top:930px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/54545.jpeg" alt="" data-index="49" style="position:absolute; left:2604px; top:1023px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/1212121.jpeg" alt="" data-index="50" style="position:absolute; left:2697px; top:1116px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/56456456.jpeg" alt="" data-index="51" style="position:absolute; left:2697px; top:1209px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_29.jpeg" alt="" data-index="52" style="position:absolute; left:2790px; top:1302px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_25.jpeg" alt="" data-index="53" style="position:absolute; left:2790px; top:1395px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/020202.jpeg" alt="" data-index="54" style="position:absolute; left:2883px; top:1488px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/52525.jpeg" alt="" data-index="55" style="position:absolute; left:2883px; top:1581px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_33.jpeg" alt="" data-index="56" style="position:absolute; left:2976px; top:1674px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/4894156.jpeg" alt="" data-index="57" style="position:absolute; left:2976px; top:1767px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/787878.jpeg" alt="" data-index="58" style="position:absolute; left:3069px; top:1860px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/787998.jpeg" alt="" data-index="59" style="position:absolute; left:3069px; top:1953px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_08.jpeg" alt="" data-index="60" style="position:absolute; left:3162px; top:2046px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/585858.jpeg" alt="" data-index="61" style="position:absolute; left:3162px; top:2139px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_13.jpeg" alt="" data-index="62" style="position:absolute; left:3255px; top:2232px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/132132.jpeg" alt="" data-index="63" style="position:absolute; left:3255px; top:2325px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/46465.jpeg" alt="" data-index="64" style="position:absolute; left:3348px; top:2418px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/98789456456.jpeg" alt="" data-index="65" style="position:absolute; left:3348px; top:2511px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/121212.jpeg" alt="" data-index="66" style="position:absolute; left:3441px; top:2604px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_22.jpeg" alt="" data-index="67" style="position:absolute; left:3441px; top:2697px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/36543643.jpeg" alt="" data-index="68" style="position:absolute; left:3534px; top:2790px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_39.jpeg" alt="" data-index="69" style="position:absolute; left:3534px; top:2883px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_09.jpeg" alt="" data-index="70" style="position:absolute; left:3627px; top:2976px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/697463.jpeg" alt="" data-index="71" style="position:absolute; left:3627px; top:3069px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/87987442.jpeg" alt="" data-index="72" style="position:absolute; left:3720px; top:3162px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/5454545.jpeg" alt="" data-index="73" style="position:absolute; left:3999px; top:3069px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/7897897.jpeg" alt="" data-index="74" style="position:absolute; left:4092px; top:3069px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/img_16.jpeg" alt="" data-index="75" style="position:absolute; left:3999px; top:3162px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+<img src="https://raw.githubusercontent.com/URRACCA-media/NuevaYol/main/323232.jpeg" alt="" data-index="76" style="position:absolute; left:4092px; top:3162px; width:90px; height:90px; object-fit:cover; cursor:pointer;" />
+</div>
+</div>
+
+<!-- Frases -->
+<div class="frases">
+<p>#1. El tiempo no pasa, se acumula.</p>
+<p>#2. No hay nada más real que una ficción sostenida.</p>
+<p>#3. Hay ciudades que solo se entienden en blanco y negro.</p>
+<p>#4. Una cámara análoga obliga a mirar dos veces antes de disparar.</p>
+<p>#5. El vapor sale de la calle como si Manhattan respirara.</p>
+<p>#6. Cada domingo es una cita con lo incierto.</p>
+<p>#7. Las calles tienen memoria propia.</p>
+<p>#8. Una carta es un puente que tarda en cruzarse.</p>
+<p>#9. Lo que se dice entre amigos pesa distinto.</p>
+<p>#10. La distancia agranda las palabras.</p>
+<p>#11. La mano abierta del semáforo es la señal más honesta de Nueva York.</p>
+<p>#12. El café de la mañana es un ritual sagrado.</p>
+<p>#13. Todo viaje empieza con un malentendido.</p>
+<p>#14. Fotografiar a alguien de espaldas es una forma de respeto.</p>
+<p>#15. Lo que no se escribe se pierde dos veces.</p>
+<p>#16. Al cenar dumplings en un restaurante ucraniano todos los idiomas suenan igual.</p>
+<p>#17. Caminar sin rumbo es una forma de pensar.</p>
+<p>#18. Las fotos mienten con elegancia.</p>
+<p>#19. Hay conversaciones que duran años.</p>
+<p>#20. El grano de la película es la textura del recuerdo.</p>
+<p>#21. Leer es conversar con alguien que no te oye.</p>
+<p>#22. Un Rothko visto en persona no se parece a nada.</p>
+<p>#23. Un barrio nuevo es un idioma nuevo.</p>
+<p>#24. Michel cuenta una historia y el bar entero se vuelve novela.</p>
+<p>#25. Lo que se repite se transforma.</p>
+<p>#26. Hay amistades que funcionan mejor por escrito.</p>
+<p>#27. Una paloma y una cáscara de banana en un umbral: naturaleza muerta neoyorkina.</p>
+<p>#28. La cocina es el laboratorio de lo cotidiano.</p>
+<p>#29. Cada idioma revela un yo distinto.</p>
+<p>#30. Los bares de Greenwich guardan fantasmas de escritores y Lago los conoce a todos.</p>
+<p>#31. Un abrazo resuelve lo que mil palabras no pueden.</p>
+<p>#32. Broadway de noche es un río de letras que nadie lee completas.</p>
+<p>#33. Escribir a mano es más lento y más honesto.</p>
+<p>#34. Los aeropuertos son limbos modernos.</p>
+<p>#35. Lovely day for a Guinness y para no volver al hotel.</p>
+<p>#36. Hay libros que te encuentran a ti.</p>
+<p>#37. El desorden creativo no es desorden.</p>
+<p>#38. Penn Station: todos esperan algo distinto con la misma cara.</p>
+<p>#39. Las coincidencias son la poesía de lo real.</p>
+<p>#40. Un buen título lo cambia todo.</p>
+<p>#41. La pereza creativa es una estafa que uno se cuenta.</p>
+<p>#42. Milena sonríe y el fondo se desenfoca solo.</p>
+<p>#43. Lo urgente casi nunca es lo importante.</p>
+<p>#44. Frente a un Picasso uno se siente intruso y bienvenido al mismo tiempo.</p>
+<p>#45. Un cuaderno en blanco es una promesa.</p>
+<p>#46. La amistad se construye con constancia.</p>
+<p>#47. Toda rutina tiene grietas por donde entra la luz.</p>
+<p>#48. Lo que se comparte se multiplica.</p>
+<p>#49. Las madrugadas son de los insomnes y los poetas.</p>
+<p>#50. Tres amigos riendo frente a un food truck: el retrato que nadie cuelga en un museo.</p>
+<p>#51. El otoño es la estación más literaria.</p>
+<p>#52. Las mudanzas revelan quién eres realmente.</p>
+<p>#53. Hay canciones que son máquinas del tiempo.</p>
+<p>#54. La soledad elegida no es soledad.</p>
+<p>#55. Todo proyecto empieza con un acto de fe.</p>
+<p>#56. Las bibliotecas huelen a posibilidad.</p>
+<p>#57. El humor es la distancia justa con el dolor.</p>
+<p>#58. Cada lengua tiene palabras intraducibles.</p>
+<p>#59. Un tipo duerme contra la puerta del vagón como si el mundo no existiera.</p>
+<p>#60. La duda es más productiva que la certeza.</p>
+<p>#61. Hay barrios que son personajes de novela.</p>
+<p>#62. El pan recién hecho justifica cualquier mañana.</p>
+<p>#63. La correspondencia es un arte en extinción.</p>
+<p>#64. Cada estación del año pide un libro distinto.</p>
+<p>#65. Las fronteras son líneas que inventamos.</p>
+<p>#66. Lo que se posterga crece en la imaginación.</p>
+<p>#67. Un buen paseo reemplaza una sesión de terapia.</p>
+<p>#68. Las plazas son los salones de la ciudad.</p>
+<p>#69. Hay silencios que dicen más que los discursos.</p>
+<p>#70. La creatividad necesita aburrimiento.</p>
+<p>#71. Todo final es un comienzo disfrazado.</p>
+<p>#72. Las escaleras tienen algo de cinematográfico.</p>
+<p>#73. Lo que se nombra empieza a existir.</p>
+<p>#74. La generosidad intelectual es rara y valiosa.</p>
+<p>#75. Hay noches que merecen su propio capítulo.</p>
+<p>#76. La marihuana de Nueva York pega como si tuviera algo que demostrar.</p>
+<p>#77. El vino abre puertas que la razón cierra.</p>
+<p>#78. Cada carta es una versión de quien la escribe.</p>
+<p>#80. Las azoteas son refugios secretos.</p>
+<p>#80. La disciplina es libertad disfrazada.</p>
+<p>#81. Hay conversaciones que cambian el curso de una vida.</p>
+<p>#82. Jordan 11 en el subway: alguien cuida sus pasos más que su destino.</p>
+<p>#83. Las despedidas largas son las peores.</p>
+<p>#84. Todo escritor tiene un cuarto propio en la cabeza.</p>
+<p>#85. La nieve transforma cualquier paisaje en silencio.</p>
+<p>#86. Hay comidas que son declaraciones de amor.</p>
+<p>#87. Lo que se escribe con prisa se lee con dolor.</p>
+<p>#88. Las librerías de viejo guardan tesoros.</p>
+<p>#89. El jet lag es un estado alterado de conciencia.</p>
+<p>#90. Toda colección revela una obsesión.</p>
+<p>#91. La paciencia es la virtud menos glamorosa.</p>
+<p>#92. El puente de Brooklyn es un pasillo entre dos mundos.</p>
+<p>#93. El amanecer siempre cumple su promesa.</p>
+<p>#94. Las postales son mentiras hermosas.</p>
+<p>#95. Lo que no se dice pesa más que lo dicho.</p>
+<p>#96. Un mercado es un museo de lo cotidiano.</p>
+<p>#97. La memoria selecciona con criterio propio.</p>
+<p>#98. Hay olores que son portales temporales.</p>
+<p>#99. El domingo tiene una luz particular.</p>
+<p>#100. Toda obsesión es una forma de amor.</p>
+<p>#101. Las estaciones de tren son templos de la espera.</p>
+<p>#102. Lo que se pierde a veces vuelve transformado.</p>
+<p>#103. La belleza está en lo que se mira dos veces.</p>
+<p>#104. Hay ríos que dividen más que fronteras.</p>
+<p>#105. El ocio productivo no es una contradicción.</p>
+<p>#106. Las cartas viejas son cápsulas del tiempo.</p>
+<p>#107. Todo barrio tiene su cantina esencial.</p>
+<p>#108. La improvisación requiere más preparación.</p>
+<p>#109. Hay atardeceres que exigen ser compartidos.</p>
+<p>#110. Lo que se construye lento dura más.</p>
+<p>#111. Las esquinas guardan historias.</p>
+<p>#112. El insomnio es el precio de pensar demasiado.</p>
+<p>#113. El Guggenheim es una rampa hacia adentro de uno mismo.</p>
+<p>#114. La risa compartida es pegamento social.</p>
+<p>#115. Todo ritual tiene su razón de ser.</p>
+<p>#116. Las ventanas de los cafés son pantallas al mundo.</p>
+<p>#117. Lo que se escribe se fija y se libera a la vez.</p>
+<p>#118. Hay viajes que empiezan antes de salir de casa.</p>
+<p>#119. El azar es el mejor dramaturgo.</p>
+<p>#120. Las escaleras mecánicas son ríos urbanos.</p>
+<p>#121. Todo archivo es una forma de resistencia.</p>
+<p>#122. La curiosidad es el motor más fiable.</p>
+<p>#123. Hay tardes que no piden nada.</p>
+<p>#124. El papel tiene más paciencia que la pantalla.</p>
+<p>#125. Las ciudades portuarias tienen algo de umbral.</p>
+<p>#126. Lo que se lee joven se recuerda distinto.</p>
+<p>#127. Hay caminatas que son expediciones interiores.</p>
+<p>#128. El error es el maestro más efectivo.</p>
+<p>#129. Las mañanas de sábado son territorios libres.</p>
+<p>#130. Todo mapa es una invitación.</p>
+<p>#131. La traducción es creación disfrazada.</p>
+<p>#132. Hay balcones que son miradores filosóficos.</p>
+<p>#133. Lo que se acumula eventualmente desborda.</p>
+<p>#134. Las fire escapes son los balcones que Nueva York no planificó.</p>
+<p>#135. El cansancio creativo es distinto al otro.</p>
+<p>#136. Hay reencuentros que borran el tiempo.</p>
+<p>#137. Todo diario es parcial y eso está bien.</p>
+<p>#138. Las nubes son el espectáculo más infravalorado.</p>
+<p>#139. Lo que se hereda se transforma o se abandona.</p>
+<p>#140. Hay lecturas que son encuentros inevitables.</p>
+<p>#141. El trayecto importa más que la llegada.</p>
+<p>#142. Las cocinas ajenas revelan mundos.</p>
+<p>#143. Todo compromiso artístico es también vital.</p>
+<p>#144. Hay parques que son catedrales sin techo.</p>
+<p>#145. Lo que se pospone acumula intereses.</p>
+<p>#146. Michel escribe sobre el futuro pero camina por el Village como si fuera 1974.</p>
+<p>#147. El aburrimiento es un lujo contemporáneo.</p>
+<p>#148. Hay callejones que guardan secretos a voces.</p>
+<p>#149. Todo fragmento aspira a ser parte de algo mayor.</p>
+<p>#150. Las bicicletas cambian la perspectiva urbana.</p>
+<p>#151. Lo que se comparte en voz baja tiene más peso.</p>
+<p>#152. Hay noches de verano que no terminan nunca.</p>
+<p>#153. El subrayado es una conversación con el texto.</p>
+<p>#154. Times Square en película: todo ese neón reducido a grises.</p>
+<p>#155. Todo hábito empieza como decisión.</p>
+<p>#156. Hay trenes nocturnos que son hoteles en movimiento.</p>
+<p>#157. Lo que se escucha con atención se transforma.</p>
+<p>#158. Las terrazas son extensiones del pensamiento.</p>
+<p>#159. El asombro es una disciplina cultivable.</p>
+<p>#160. Hay tardes de domingo que pesan como piedras.</p>
+<p>#161. Todo gesto repetido se convierte en lenguaje.</p>
+<p>#162. Las panaderías son templos del amanecer.</p>
+<p>#163. Lo que se regala sin esperar vuelve multiplicado.</p>
+<p>#164. Todo lo que se promete debería cumplirse.</p>
+<p>#165. El silencio entre amigos no incomoda.</p>
+<p>#166. Las islas tienen su propia lógica temporal.</p>
+<p>#167. Todo lo que brilla en la memoria fue intenso.</p>
+<p>#168. Hay mercados nocturnos que son teatros.</p>
+<p>#169. Lo que se decide en un instante a veces dura siempre.</p>
+<p>#170. Las bibliotecas públicas son democracias reales.</p>
+<p>#171. El frío obliga al contacto humano.</p>
+<p>#172. El Hudson no es bonito, pero es honesto.</p>
+<p>#173. Todo paisaje cambia según quién lo mira.</p>
+<p>#174. Las cenas largas son las mejores conversaciones.</p>
+<p>#175. Lo que se pierde en traducción a veces se gana.</p>
+<p>#176. Hay amaneceres que exigen testigos.</p>
+<p>#177. El olor a libro nuevo es una promesa.</p>
+<p>#178. Lo que se guarda en cajas eventualmente se abre.</p>
+<p>#179. Todo lo que se hace con amor se nota.</p>
+<p>#180. Hay puertos que son puertas al mundo.</p>
+<p>#181. Lo que se lee en voz alta cobra otra dimensión.</p>
+<p>#182. Las plazas vacías tienen su propia belleza.</p>
+<p>#183. El mediodía es la hora menos poética.</p>
+<p>#184. Hay cuadernos que merecen mejor letra.</p>
+<p>#185. Todo camino de vuelta es distinto al de ida.</p>
+<p>#186. Hay días que solo existen para ser contados.</p>
+<p>#187. Lo que se entiende tarde se entiende mejor.</p>
+<p>#188. Hay jardines que son obras de arte vivas.</p>
+<p>#189. El tedio es el combustible de la creatividad.</p>
+<p>#190. Las cartas de amor no caducan.</p>
+<p>#191. Todo lo que se archiva aspira a ser releído.</p>
+<p>#192. Hay calles que cambian de personalidad de noche.</p>
+<p>#193. Lo que se construye entre dos es más fuerte.</p>
+<p>#194. Lago arrastra por los bares del Village como quien da una clase magistral sin aula.</p>
+<p>#195. El primer sorbo de café es siempre revelación.</p>
+<p>#196. Hay mudanzas que son reinvenciones.</p>
+<p>#197. Todo lo que se anota se salva del olvido.</p>
+<p>#198. Rashid Johnson entiende algo sobre el crecimiento que los botánicos no.</p>
+<p>#199. Lo que se lee antes de dormir se sueña.</p>
+<p>#200. Hay estaciones de metro que son galerías de arte.</p>
+<p>#201. El paseo sin destino es la mejor brújula.</p>
+<p>#202. Las mañanas de niebla borran los contornos.</p>
+<p>#203. Todo lo que se promete debería cumplirse.</p>
+<p>#204. Un hot dog a las once de la noche bajo luces fluorescentes: bodegón americano.</p>
+<p>#205. Lo que se dice al oído no se olvida.</p>
+<p>#206. Las noches de tormenta tienen su grandeza.</p>
+<p>#207. El ritual del té es una meditación líquida.</p>
+<p>#208. Hay puentes peatonales que son miradores.</p>
+<p>#209. Todo lo escrito a mano tiene más alma.</p>
+<p>#210. Las marquesinas son refugios involuntarios.</p>
+<p>#211. Lo que se cocina lento alimenta más.</p>
+<p>#212. Hay patios interiores que son mundos cerrados.</p>
+<p>#213. El final del día pide recuento.</p>
+<p>#214. Las librerías independientes son trincheras.</p>
+<p>#215. Todo lo que empieza con curiosidad llega lejos.</p>
+<p>#216. El diamante del Yankee Stadium visto desde arriba parece un poema geométrico.</p>
+<p>#217. Lo que se mira sin prisa se ve mejor.</p>
+<p>#218. Las aceras anchas producen mejores paseos.</p>
+<p>#219. El correo postal todavía emociona.</p>
+<p>#220. Hay tardes de otoño que son oro líquido.</p>
+<p>#221. Todo lo que se repite con amor no cansa.</p>
+<p>#222. Las puertas entreabiertas invitan a imaginar.</p>
+<p>#223. Lo que se dice en broma a veces es lo más cierto.</p>
+<p>#224. Una Corona destapa el viaje.</p>
+<p>#225. El primer día en una ciudad nueva es electricidad.</p>
+<p>#226. Las flores en la mesa cambian la comida.</p>
+<p>#227. Todo lo que se escribe se convierte en testigo.</p>
+<p>#228. Hay noches de invierno que piden chocolate.</p>
+<p>#229. Lo que se elige cada día define quién eres.</p>
+<p>#230. Las fuentes de los parques son metrónomos.</p>
+<p>#231. El orden de los libros revela la mente.</p>
+<p>#232. Hay vitrinas que son pequeños museos.</p>
+<p>#233. Todo lo que se hace por primera vez se recuerda.</p>
+<p>#234. Las calles empedradas ralentizan el paso.</p>
+<p>#235. Lo que se guarda en cajas eventualmente se abre.</p>
+<p>#236. Hay cafés que son oficinas clandestinas.</p>
+<p>#237. El silencio después de la música es parte de ella.</p>
+<p>#238. Las ventanas con luz encendida son pequeños teatros.</p>
+<p>#239. Todo lo que nace de la urgencia tiene verdad.</p>
+<p>#240. Hay cruces de calles que son encrucijadas vitales.</p>
+<p>#241. Lo que se aprende viajando no se aprende de otro modo.</p>
+<p>#242. Las mañanas claras prometen todo.</p>
+<p>#243. El olor a tierra mojada es nostalgia pura.</p>
+<p>#244. Hay puertas que se abren una sola vez.</p>
+<p>#245. Todo lo que se intenta con honestidad vale.</p>
+<p>#246. Milena cruza la calle y la acera de enfrente se vuelve mejor destino.</p>
+<p>#247. Lo que se dice mirando a los ojos se sella.</p>
+<p>#248. Hay primaveras que llegan de golpe.</p>
+<p>#249. El final de un libro bueno es siempre un duelo.</p>
+<p>#250. Las fotos borrosas a veces son las mejores.</p>
+<p>#251. Todo lo que crece lento tiene raíces.</p>
+<p>#252. Hay encuentros que estaban escritos.</p>
+<p>#253. Lo que se vive intensamente se cuenta solo.</p>
+<p>#254. Las horas muertas son las más vivas.</p>
+<p>#255. El viento cambia el ánimo sin pedir permiso.</p>
+<p>#256. Hay rincones que son todo un universo.</p>
+<p>#257. Todo lo que importa cabe en una frase.</p>
+<p>#258. Treinta y seis fotos por rollo: la disciplina de elegir.</p>
+<p>#259. Lo que se escribe con cariño se lee igual.</p>
+<p><strong>#260. Todas las frases (menos ésta) fueron creadas con un sintextizador.</strong></p>
+<p>#261. Continuará.</p>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lb-close">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lb-prev">&#8249;</button>
+    <button class="lightbox-nav lightbox-next" id="lb-next">&#8250;</button>
+    <img src="" alt="" id="lb-img" />
+</div>
+
+<script>
+    const images = document.querySelectorAll('.canvas img');
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+        currentIndex = index;
+        lbImg.src = images[index].src;
+        lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove('active');
+    }
+
+    function navigate(direction) {
+        currentIndex = (currentIndex + direction + images.length) % images.length;
+        lbImg.src = images[currentIndex].src;
+    }
+
+    images.forEach((img, i) => {
+        img.addEventListener('click', () => openLightbox(i));
+    });
+
+    document.getElementById('lb-close').addEventListener('click', closeLightbox);
+    document.getElementById('lb-prev').addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
+    document.getElementById('lb-next').addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'ArrowRight') navigate(1);
+    });
+</script>
+
+<script>
+    function scaleCanvas() {
+        const wrapper = document.getElementById('canvas-wrapper');
+        const canvas = document.getElementById('canvas');
+        const availableWidth = document.body.clientWidth - 80;
+        const canvasWidth = 4185;
+        const canvasHeight = 3255;
+        
+        if (availableWidth < canvasWidth) {
+            const scale = availableWidth / canvasWidth;
+            canvas.style.transform = 'scale(' + scale + ')';
+            wrapper.style.height = (canvasHeight * scale) + 'px';
+        } else {
+            canvas.style.transform = 'scale(1)';
+            wrapper.style.height = canvasHeight + 'px';
+        }
+    }
+    
+    scaleCanvas();
+    window.addEventListener('resize', scaleCanvas);
+</script>
+
+</body>
+</html>
