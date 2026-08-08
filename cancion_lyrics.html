@@ -32,20 +32,71 @@
       font-size: 14px;
       margin-bottom: 36px;
     }
-    /* Reproductor de Drive embebido */
+    /* Reproductor propio URRACCA */
     .player {
+      display: flex;
+      align-items: center;
+      gap: 16px;
       width: 100%;
       border: 1px solid var(--linea);
       border-radius: 10px;
-      overflow: hidden;
+      padding: 16px 20px;
       margin: 0 auto 40px;
       background: #fff;
     }
-    .player iframe {
-      width: 100%;
-      height: 80px;
+    .play-btn {
+      flex: 0 0 auto;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--tinta);
       border: 0;
-      display: block;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease;
+      padding: 0;
+    }
+    .play-btn:hover { transform: scale(1.06); }
+    .play-btn svg { display: block; }
+    .play-btn .icon-play {
+      color: #faf9f6;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      letter-spacing: 1px;
+      line-height: 1;
+      user-select: none;
+    }
+    .play-btn .icon-pause { display: none; }
+    .player.is-playing .play-btn .icon-play { display: none; }
+    .player.is-playing .play-btn .icon-pause { display: block; }
+    .player-body {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .track {
+      position: relative;
+      height: 6px;
+      background: var(--linea);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .track-fill {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      width: 0%;
+      background: var(--tinta);
+      border-radius: 3px;
+    }
+    .times {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--tenue);
+      margin-top: 8px;
+      letter-spacing: 0.5px;
     }
     .separador {
       width: 40px;
@@ -78,12 +129,25 @@
 
     <div class="simbolo">./\.</div>
 
-    <!-- Reproductor: el player de Google Drive dentro de la propia pagina -->
-    <div class="player">
-      <iframe
-        src="https://drive.google.com/file/d/1nblIT5TK7dYy3PVCBzCDzsY3XIzPVcu9/preview"
-        allow="autoplay">
-      </iframe>
+    <!-- Reproductor propio: reproduce el MP3 alojado junto a la pagina -->
+    <div class="player" id="player">
+      <button class="play-btn" id="playBtn" aria-label="Reproducir">
+        <span class="icon-play">./\.</span>
+        <svg class="icon-pause" width="14" height="16" viewBox="0 0 14 16" fill="none">
+          <rect x="0" y="0" width="4" height="16" fill="#faf9f6"/>
+          <rect x="10" y="0" width="4" height="16" fill="#faf9f6"/>
+        </svg>
+      </button>
+      <div class="player-body">
+        <div class="track" id="track">
+          <div class="track-fill" id="trackFill"></div>
+        </div>
+        <div class="times">
+          <span id="curTime">0:00</span>
+          <span id="durTime">--:--</span>
+        </div>
+      </div>
+      <audio id="audio" src="intermedio.mp3" preload="metadata"></audio>
     </div>
 
     <hr class="separador">
@@ -151,5 +215,54 @@ I used to care, but things have changed</strong></div>
     <div class="pie">./\.</div>
 
   </div>
+
+  <script>
+    (function () {
+      var player   = document.getElementById('player');
+      var audio    = document.getElementById('audio');
+      var playBtn  = document.getElementById('playBtn');
+      var track    = document.getElementById('track');
+      var fill     = document.getElementById('trackFill');
+      var curTime  = document.getElementById('curTime');
+      var durTime  = document.getElementById('durTime');
+
+      function fmt(s) {
+        if (isNaN(s) || !isFinite(s)) return '--:--';
+        var m = Math.floor(s / 60);
+        var sec = Math.floor(s % 60);
+        return m + ':' + (sec < 10 ? '0' : '') + sec;
+      }
+
+      playBtn.addEventListener('click', function () {
+        if (audio.paused) { audio.play(); } else { audio.pause(); }
+      });
+
+      audio.addEventListener('play',  function () { player.classList.add('is-playing'); });
+      audio.addEventListener('pause', function () { player.classList.remove('is-playing'); });
+
+      audio.addEventListener('loadedmetadata', function () {
+        durTime.textContent = fmt(audio.duration);
+      });
+
+      audio.addEventListener('timeupdate', function () {
+        var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+        fill.style.width = pct + '%';
+        curTime.textContent = fmt(audio.currentTime);
+      });
+
+      audio.addEventListener('ended', function () {
+        player.classList.remove('is-playing');
+        fill.style.width = '0%';
+        curTime.textContent = '0:00';
+      });
+
+      // Buscar (clic en la barra)
+      track.addEventListener('click', function (e) {
+        var rect = track.getBoundingClientRect();
+        var ratio = (e.clientX - rect.left) / rect.width;
+        if (audio.duration) { audio.currentTime = ratio * audio.duration; }
+      });
+    })();
+  </script>
 </body>
 </html>
