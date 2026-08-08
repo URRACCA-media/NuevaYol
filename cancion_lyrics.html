@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URRACCA</title>
+  <style>
+    :root {
+      --papel: #faf9f6;
+      --tinta: #2b2b2b;
+      --tenue: #8a8478;
+      --linea: #e3e0d8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--papel);
+      color: var(--tinta);
+      font-family: Georgia, 'Times New Roman', serif;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+    .contenedor {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 52px 24px 80px;
+    }
+    .simbolo {
+      text-align: center;
+      letter-spacing: 3px;
+      color: var(--tenue);
+      font-size: 14px;
+      margin-bottom: 36px;
+    }
+    /* Reproductor de Drive embebido */
+    .player {
+      width: 100%;
+      border: 1px solid var(--linea);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0 auto 40px;
+      background: #fff;
+    }
+    .player iframe {
+      width: 100%;
+      height: 80px;
+      border: 0;
+      display: block;
+    }
+    .separador {
+      width: 40px;
+      height: 1px;
+      background: var(--linea);
+      border: 0;
+      margin: 0 auto 36px;
+    }
+    /* Letra: respeta saltos de linea y estrofas */
+    .lyrics {
+      white-space: pre-line;
+      font-size: 18px;
+      text-align: center;
+      color: var(--tinta);
+    }
+    .lyrics strong {
+      font-weight: bold;
+    }
+    .pie {
+      text-align: center;
+      color: var(--tenue);
+      font-size: 13px;
+      margin-top: 52px;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+
+    <div class="simbolo">./\.</div>
+
+    <!-- Reproductor: el player de Google Drive dentro de la propia pagina -->
+    <div class="player">
+      <iframe
+        src="https://drive.google.com/file/d/1nblIT5TK7dYy3PVCBzCDzsY3XIzPVcu9/preview"
+        allow="autoplay">
+      </iframe>
+    </div>
+
+    <hr class="separador">
+
+    <div class="lyrics">A worried man with a worried mind
+No one in front of me and nothing behind
+There’s a woman on my lap and she’s drinking champagne
+
+Got white skin, got assassin’s eyes
+I’m looking up into the sapphire-tinted skies
+I’m well dressed, waiting on the last train
+
+Standing on the gallows with my head in a noose
+Any minute now I’m expecting all hell to break loose
+
+<strong>People are crazy and times are strange
+I’m locked in tight, I’m out of range
+I used to care, but things have changed</strong>
+
+This place ain’t doing me any good
+I’m in the wrong town, I should be in Hollywood
+Just for a second there I thought I saw something move
+
+Gonna take dancing lessons, do the jitterbug rag
+Ain’t no shortcuts, gonna dress in drag
+Only a fool in here would think he’s got anything to prove
+
+Lot of water under the bridge, lot of other stuff too
+Don’t get up gentlemen, I’m only passing through
+
+<strong>People are crazy and times are strange
+I’m locked in tight, I’m out of range
+I used to care, but things have changed</strong>
+
+I’ve been walking forty miles of bad road
+If the Bible is right, the world will explode
+I’ve been trying to get as far away from myself as I can
+
+Some things are too hot to touch
+The human mind can only stand so much
+You can’t win with a losing hand
+
+Feel like falling in love with the first woman I meet
+Putting her in a wheelbarrow and wheeling her down the street
+
+<strong>People are crazy and times are strange
+I’m locked in tight, I’m out of range
+I used to care, but things have changed</strong>
+
+I hurt easy, I just don’t show it
+You can hurt someone and not even know it
+The next sixty seconds could be like an eternity
+
+Gonna get low down, gonna fly high
+All the truth in the world adds up to one big lie
+I’m in love with a woman who don’t even appeal to me
+
+Mr. Jinx and Miss Lucy, they jumped in the lake
+I’m not that eager to make a mistake
+
+<strong>People are crazy and times are strange
+I’m locked in tight, I’m out of range
+I used to care, but things have changed</strong></div>
+
+    <div class="pie">./\.</div>
+
+  </div>
+</body>
+</html>
