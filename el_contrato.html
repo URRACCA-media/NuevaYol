@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URRACCA · #271 · El contrato</title>
+<style>
+  :root{
+    --papel:#faf9f6; --tinta:#2b2b2b; --tenue:#8a8478; --linea:#e3e0d8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--papel); color:var(--tinta);
+    font-family:Georgia,"Times New Roman",serif;
+    line-height:1.7; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center;
+    padding:6vh 24px;
+  }
+  .marco{width:100%; max-width:720px; display:flex; flex-direction:column; flex:1}
+
+  header{text-align:center; margin-bottom:2.4rem}
+  .wordmark{
+    font-size:1.5rem; letter-spacing:.42em; text-indent:.42em;
+    font-weight:400;
+  }
+  .simbolo{
+    color:var(--tenue); font-size:1.05rem; letter-spacing:.25em;
+    margin-top:.5rem;
+  }
+  .titulo{
+    text-align:center; font-size:2rem; margin-top:1.4rem; font-weight:400;
+  }
+  .regla{
+    width:44px; height:1px; background:var(--linea);
+    margin:1.4rem auto 0;
+  }
+
+  /* Foto */
+  figure{margin:2.4rem 0}
+  figure img{
+    width:100%; height:auto; display:block;
+    border:1px solid var(--linea);
+  }
+  figcaption{
+    margin-top:.7rem; text-align:center;
+    font-size:.82rem; font-style:italic; color:var(--tenue);
+  }
+
+  /* Texto */
+  .texto{font-size:1.08rem}
+  .texto p{margin-bottom:1.1rem}
+  .fecha{
+    font-style:italic; color:var(--tenue);
+    letter-spacing:.02em; margin-bottom:2.6rem;
+  }
+  .texto s{color:var(--tenue); text-decoration-thickness:1px}
+
+  /* Firmas al pie del contrato */
+  .firmas{
+    display:flex; justify-content:space-between; gap:2rem;
+    margin-top:2.8rem; flex-wrap:wrap;
+  }
+  .firma{
+    flex:1 1 200px; text-align:center;
+    padding-top:.6rem; border-top:1px solid var(--linea);
+    font-style:italic; color:var(--tinta);
+  }
+
+  /* Pie: #271 · URRACCA · ./\. centrado y pequeno */
+  footer{
+    margin-top:auto; padding-top:4rem;
+    text-align:center;
+    font-size:1rem; letter-spacing:.2em; color:var(--tenue);
+  }
+</style>
+</head>
+<body>
+  <div class="marco">
+    <header>
+      <div class="wordmark">URRACCA</div>
+      <div class="simbolo">./\.</div>
+      <h1 class="titulo">El contrato</h1>
+      <div class="regla"></div>
+    </header>
+
+    <figure>
+      <img src="contrato.jpg" alt="El contrato">
+    </figure>
+
+    <div class="texto">
+      <p class="fecha">17 de mayo, 2025</p>
+
+      <p>Esta tarde-noche de lluvia en Praga lanzamos una propuesta al viento,
+      que es el aliento de les dioses: que en <s>octubre</s> septiembre de 2026,
+      para celebrar el décimo quinto aniversario de pareja de Juliette y
+      Alessandro, Juan y María nos quieren regalar una escapada
+      lisérgico-romántica.</p>
+
+      <p>Que suceda: si les dioses y el viento lo auspician.</p>
+
+      <div class="firmas">
+        <div class="firma">Juan Mut</div>
+        <div class="firma">Marieta Beato</div>
+      </div>
+    </div>
+
+    <footer>#271</footer>
+  </div>
+</body>
+</html>
