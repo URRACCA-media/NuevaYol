@@ -76,6 +76,10 @@
     :root{--fs:18px}
     .titulo{font-size:1.75rem}
     .naipe{width:130px}
+    .controles{top:auto; bottom:16px; right:14px; opacity:1; gap:8px}
+    .controles button{width:42px; height:42px; font-size:.95rem;
+      box-shadow:0 1px 6px rgba(60,50,40,.12)}
+    body{padding-bottom:calc(10vh + 60px)}
   }
   @media print{
     .progreso,.controles{display:none}
@@ -304,7 +308,10 @@
 
     var raiz=document.documentElement;
     var fs=parseInt(getComputedStyle(raiz).getPropertyValue('--fs'))||19;
-    function aplica(){raiz.style.setProperty('--fs',fs+'px');progreso();}
+    try{var g=parseInt(localStorage.getItem('tdsn-fs'));if(g>=15&&g<=26)fs=g;}catch(e){}
+    function aplica(){raiz.style.setProperty('--fs',fs+'px');progreso();
+      try{localStorage.setItem('tdsn-fs',fs);}catch(e){}}
+    aplica();
     document.getElementById('mas').onclick=function(){fs=Math.min(26,fs+1);aplica();};
     document.getElementById('menos').onclick=function(){fs=Math.max(15,fs-1);aplica();};
   </script>
